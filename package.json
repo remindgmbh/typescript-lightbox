@@ -1,0 +1,25 @@
+{
+  "name": "@remindgmbh/lightbox",
+  "version": "0.1.0",
+  "description": "Lightbox library",
+  "main": "index.js",
+  "dependencies": {
+    "@remindgmbh/util": "git+ssh://git@bitbucket.org:remindgmbh/remind-util.git",
+    "typescript": "^3.7.2"
+  },
+  "scripts": {
+    "postinstall": "tsc -p .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/remindgmbh/remind-lightbox/"
+  },
+  "author": "Michael Didion <m.didion@remind.de> (https://www.remind.de/)",
+  "license": "BSD-3-Clause",
+  "private": true,
+  "devDependencies": {
+    "tslint": "^5.10.0",
+    "@types/node": "^12.12.14"
+  }
+}
