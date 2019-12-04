@@ -1,7 +1,10 @@
-import {elementFactory, CreatedElement} from "@remindgmbh/util";
+import {elementFactory} from "@remindgmbh/util";
 
 export interface LightboxFunctions {
-    [name: string]: <T extends string>(tag?: T, props?: Partial<CreatedElement<T>>) => HTMLElement
+    createCanvas: (className: string) => HTMLElement,
+    createFooter: (className: string) => HTMLElement,
+    createHeader: (className: string) => HTMLElement,
+    createCloseButton: (className: string) => HTMLElement
 }
 
 export interface LightboxClasses {
@@ -9,7 +12,7 @@ export interface LightboxClasses {
 }
 
 export interface LightboxOptions {
-    functions: LightboxFunctions,
+    functions: Partial<LightboxFunctions>,
     classes: LightboxClasses
 }
 
@@ -31,8 +34,8 @@ export class Lightbox {
     protected closeButton: HTMLElement;
 
     /* Objects for css classes & rendering function */
-    protected classes: LightboxClasses = {};
-    protected functions: LightboxFunctions = {};
+    protected classes: LightboxClasses;
+    protected functions: LightboxFunctions;
 
     /**
      * Set default css classes & rendering function
@@ -50,10 +53,10 @@ export class Lightbox {
         }, (options && options.classes ? options.classes : {}));
 
         this.functions = Object.assign({
-            createCanvas: elementFactory,
-            createFooter: elementFactory,
-            createHeader: elementFactory,
-            createCloseButton: elementFactory
+            createCanvas: Lightbox.createElement,
+            createFooter: Lightbox.createElement,
+            createHeader: Lightbox.createElement,
+            createCloseButton: Lightbox.createElement
         }, (options && options.functions ? options.functions : {}));
     }
 
@@ -66,13 +69,13 @@ export class Lightbox {
             className: this.classes.lightbox
         });
 
-        this.createHeader();
-        this.createCanvas();
-        this.createFooter();
+        this.buildHeader();
+        this.buildCanvas();
+        this.buildFooter();
 
-        this.container.appendChild(this.header);
-        this.container.appendChild(this.canvas);
-        this.container.appendChild(this.footer);
+        this.container.append(this.header);
+        this.container.append(this.canvas);
+        this.container.append(this.footer);
 
         this.bindEvents();
     }
@@ -80,28 +83,41 @@ export class Lightbox {
     /**
      * Create canvas div and add css class
      */
-    protected createCanvas(): void {
-        this.canvas = this.functions.createCanvas('div', {className: this.classes.canvas});
+    protected buildCanvas(): void {
+        this.canvas = this.functions.createHeader(this.classes.canvas);
     }
 
     /**
      * Create header div and add css class
      * Create close button, add css class and append to header
      */
-    protected createHeader(): void {
-        this.header = this.functions.createHeader('div', {className: this.classes.header});
+    protected buildHeader(): void {
+        this.header = this.functions.createHeader(this.classes.header);
 
-        this.closeButton = this.functions.createCloseButton('button', {className: this.classes.closeButton});
-        this.header.appendChild(this.closeButton);
+        this.closeButton = this.functions.createCloseButton(this.classes.closeButton);
+        this.header.append(this.closeButton);
     }
 
     /**
      * Create footer div and add css class
      */
-    protected createFooter(): void {
-        this.footer = this.functions.createFooter('div', {className: this.classes.footer});
+    protected buildFooter(): void {
+        this.footer = this.functions.createFooter(this.classes.footer);
     }
 
+    /**
+     * Static default function to create html div element with className
+     *
+     * @param className
+     */
+    protected static createElement(className: string): HTMLElement {
+        return elementFactory('div', {className: className});
+    }
+
+    /**
+     * Bind close event
+     * Parent method to bind more
+     */
     protected bindEvents(): void {
         let closeBtn: HTMLElement | null = this.container.querySelector(Lightbox.getClassSelector(this.classes.closeButton));
         if (closeBtn) {
@@ -129,7 +145,7 @@ export class Lightbox {
     public attach(): void {
         let html: HTMLElement | null = document.body.querySelector(Lightbox.getClassSelector(this.classes.lightbox));
         if (!html) {
-            document.body.appendChild(this.container);
+            document.body.append(this.container);
         }
     }
 
@@ -139,7 +155,7 @@ export class Lightbox {
     public detach(): void {
         let html: HTMLElement | null = document.body.querySelector(Lightbox.getClassSelector(this.classes.lightbox));
         if (html) {
-            document.body.removeChild(this.container);
+            this.container.remove();
         }
     }
 
