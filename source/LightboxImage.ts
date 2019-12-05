@@ -9,13 +9,17 @@ export class LightboxImage extends Lightbox {
 
     protected source: string = '';
 
-    constructor(source: string, options?: Partial<Overrideables>) {
-        super(source, options);
-
-        /* Override content rendering function */
-        if (options && options.functions && options.functions.createContent) {
-            this.functions.createContent = LightboxImage.createImage
+    protected static imageDefaults: Partial<Overrideables> = {
+        classes: {
+            content: 'remind-lightbox__image'
+        },
+        functions: {
+            createContent: LightboxImage.createImage
         }
+    };
+
+    constructor(source: string, options: Partial<Overrideables> = LightboxImage.imageDefaults) {
+        super(source, options);
     }
 
     /**

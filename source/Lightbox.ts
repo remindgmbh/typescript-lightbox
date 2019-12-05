@@ -73,7 +73,7 @@ export class Lightbox {
      * Create html for container, header, canvas and footer
      * Append header, canvas and footer to container
      */
-    public create(): void {
+    protected create(): void {
         this.container = elementFactory('div', {
             className: this.classes.lightbox
         });
@@ -187,6 +187,7 @@ export class Lightbox {
     public attach(): void {
         let html: HTMLElement | null = document.body.querySelector(Lightbox.getClassSelector(this.classes.lightbox));
         if (!html) {
+            this.create();
             document.body.append(this.container);
         }
     }

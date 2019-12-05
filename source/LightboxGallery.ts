@@ -29,8 +29,8 @@ export class LightboxGallery extends LightboxImage {
 
     protected index: number = 0;
     protected sources: string[] = [];
-    protected showThumbnails: boolean = false;
-    protected showPagination: boolean = false;
+    protected showThumbnails: boolean = true;
+    protected showPagination: boolean = true;
 
     protected pagination: HTMLElement;
     protected thumbnails: HTMLElement;
@@ -39,8 +39,8 @@ export class LightboxGallery extends LightboxImage {
         super(source, options);
 
         this.sources = sources;
-        this.showThumbnails = options && options.showThumbnails ? options.showThumbnails : false;
-        this.showPagination = options && options.showPagination ? options.showPagination : false;
+        this.showThumbnails = options && options.showThumbnails ? options.showThumbnails : this.showThumbnails;
+        this.showPagination = options && options.showPagination ? options.showPagination : this.showPagination;
 
         this.source = source ? source : this.sources[0];
         this.index = this.getIndexBySource(this.source);
