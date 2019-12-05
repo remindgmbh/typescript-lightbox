@@ -4,16 +4,18 @@ export interface LightboxFunctions {
     createCanvas: (className: string) => HTMLElement,
     createFooter: (className: string) => HTMLElement,
     createHeader: (className: string) => HTMLElement,
-    createCloseButton: (className: string) => HTMLElement
+    createCloseButton: (className: string) => HTMLElement,
+    createContent: (source: string, className: string) => HTMLElement,
+    createLoader: (className: string) => HTMLElement
 }
 
 export interface LightboxClasses {
     [name: string]: string
 }
 
-export interface LightboxOptions {
-    functions: Partial<LightboxFunctions>,
-    classes: LightboxClasses
+export interface Overrideables {
+    classes: Partial<LightboxClasses>,
+    functions: Partial<LightboxFunctions>
 }
 
 /**
@@ -26,37 +28,48 @@ export class Lightbox {
     private readonly CLASS_CLOSE_BUTTON: string = 'remind-lightbox__close-button';
     private readonly CLASS_FOOTER: string = 'remind-lightbox__footer';
     private readonly CLASS_HEADER: string = 'remind-lightbox__header';
+    private readonly CLASS_LOADER: string = 'remind-lightbox__loader';
+    protected readonly CLASS_CONTENT: string = 'remind-lightbox__content';
     /* Lightbox html elements */
     protected container: HTMLElement;
     protected canvas: HTMLElement;
     protected footer: HTMLElement;
     protected header: HTMLElement;
     protected closeButton: HTMLElement;
+    protected content: HTMLElement;
 
     /* Objects for css classes & rendering function */
     protected classes: LightboxClasses;
     protected functions: LightboxFunctions;
 
+    protected source: string = '';
+
     /**
      * Set default css classes & rendering function
      *
+     * @param source html string
      * @param options Override default options
      */
-    constructor(options?: Partial<LightboxOptions>) {
+    constructor(source: string, options?: Partial<Overrideables>) {
+        this.source = source;
 
         this.classes = Object.assign({
             lightbox: this.CLASS_LIGHTBOX,
             canvas: this.CLASS_CANVAS,
             closeButton: this.CLASS_CLOSE_BUTTON,
             footer: this.CLASS_FOOTER,
-            header: this.CLASS_HEADER
+            header: this.CLASS_HEADER,
+            content: this.CLASS_CONTENT,
+            loader: this.CLASS_LOADER
         }, (options && options.classes ? options.classes : {}));
 
         this.functions = Object.assign({
             createCanvas: Lightbox.createElement,
             createFooter: Lightbox.createElement,
             createHeader: Lightbox.createElement,
-            createCloseButton: Lightbox.createElement
+            createCloseButton: Lightbox.createElement,
+            createContent: Lightbox.createHtmlElement,
+            createLoader: Lightbox.createElement
         }, (options && options.functions ? options.functions : {}));
     }
 
@@ -81,10 +94,32 @@ export class Lightbox {
     }
 
     /**
+     * Bind close event
+     * Parent method to bind more
+     */
+    protected bindEvents(): void {
+        let closeBtn: HTMLElement | null = this.container.querySelector(Lightbox.getClassSelector(this.classes.closeButton));
+        if (closeBtn) {
+            closeBtn.addEventListener('click', this.detach.bind(this));
+        }
+    }
+
+    protected buildContent(): void {
+        if (this.source) {
+            this.content = this.functions.createContent(this.source, this.classes.content);
+        } else {
+            this.content = this.functions.createLoader(this.classes.loader);
+        }
+    }
+
+    /**
      * Create canvas div and add css class
      */
     protected buildCanvas(): void {
         this.canvas = this.functions.createHeader(this.classes.canvas);
+
+        this.buildContent();
+        this.canvas.append(this.content);
     }
 
     /**
@@ -115,14 +150,13 @@ export class Lightbox {
     }
 
     /**
-     * Bind close event
-     * Parent method to bind more
+     * Static default function to create html div element with className and innerHTML
      */
-    protected bindEvents(): void {
-        let closeBtn: HTMLElement | null = this.container.querySelector(Lightbox.getClassSelector(this.classes.closeButton));
-        if (closeBtn) {
-            closeBtn.addEventListener('click', this.detach.bind(this));
-        }
+    protected static createHtmlElement(source: string, className: string): HTMLElement {
+        return elementFactory('div', {
+            className: className,
+            innerHTML: source
+        });
     }
 
     /**
@@ -137,6 +171,22 @@ export class Lightbox {
         }
 
         return '';
+    }
+
+    /**
+     * Set innerHTML source
+     *
+     * @param source
+     */
+    public setSource(source: string): void {
+        this.source = source;
+
+        let canvas: HTMLElement | null
+            = this.container.querySelector(Lightbox.getClassSelector(this.classes.canvas));
+        if (canvas) {
+            this.buildContent();
+            canvas.innerHTML = this.content.outerHTML;
+        }
     }
 
     /**
@@ -157,14 +207,5 @@ export class Lightbox {
         if (html) {
             this.container.remove();
         }
-    }
-
-    /**
-     * Detach, create and attach again
-     */
-    public update(): void {
-        this.detach();
-        this.create();
-        this.attach();
     }
 }

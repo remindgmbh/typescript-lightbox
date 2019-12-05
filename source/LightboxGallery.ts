@@ -1,16 +1,16 @@
 import {elementFactory} from "@remindgmbh/util";
-import {LightboxOptions} from "./Lightbox";
-import {LightboxImage, LightboxImageFunctions} from "./LightboxImage";
+import {LightboxFunctions, Overrideables} from "./Lightbox";
+import {LightboxImage} from "./LightboxImage";
 
-export interface LightboxGalleryFunctions extends LightboxImageFunctions {
+export interface LightboxGalleryFunctions extends LightboxFunctions {
     createThumbnails: (className: string) => HTMLElement,
     createThumbnail: (source: string, className: string) => HTMLElement,
-    createPagination: (className: string, classNameCurrent: string, classNameMax: string) => HTMLElement,
+    createPagination: (index: number, maxIndex: number, className: string, classNameCurrent: string, classNameMax: string) => HTMLElement,
     createNext: (className: string) => HTMLElement,
     createPrev: (className: string) => HTMLElement
 }
 
-export interface LightboxGalleryOptions extends LightboxOptions {
+export interface LightboxGalleryOptions extends Overrideables{
     showThumbnails: boolean,
     showPagination: boolean,
     functions: Partial<LightboxGalleryFunctions>
@@ -110,9 +110,12 @@ export class LightboxGallery extends LightboxImage {
 
         if (this.showPagination) {
             this.pagination = this.functions.createPagination(
+                (this.index + 1),
+                this.sources.length,
                 this.classes.pagination,
                 this.classes.paginationCurrent,
                 this.classes.paginationMax);
+
             this.header.prepend(this.pagination);
         }
     }
@@ -142,22 +145,26 @@ export class LightboxGallery extends LightboxImage {
     /**
      * Static function to create pagination
      *
+     * @param index
+     * @param maxIndex
      * @param className
      * @param classNameCurrent
      * @param classNameMax
      */
-    protected static createPagination(className: string, classNameCurrent: string, classNameMax: string): HTMLElement {
+    protected static createPagination(index: number, maxIndex: number, className: string, classNameCurrent: string, classNameMax: string): HTMLElement {
         let pagination: HTMLElement = elementFactory('div', {
             className: className
         });
 
         let current: HTMLElement = elementFactory('span', {
-            className: classNameCurrent
+            className: classNameCurrent,
+            innerText: String(index)
         });
         pagination.append(current);
 
         let max: HTMLElement = elementFactory('span', {
-            className: classNameMax
+            className: classNameMax,
+            innerText: String(maxIndex)
         });
         pagination.append(max);
 
@@ -220,7 +227,7 @@ export class LightboxGallery extends LightboxImage {
         let counter: HTMLElement | null
             = this.container.querySelector(LightboxImage.getClassSelector(this.classes.paginationCurrent));
         if (counter) {
-            counter.innerText = String(this.index);
+            counter.innerText = String(this.index + 1);
         }
 
         let image: HTMLElement | null
