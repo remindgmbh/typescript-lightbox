@@ -230,20 +230,20 @@ export class LightboxGallery extends LightboxImage {
             counter.innerText = String(this.index + 1);
         }
 
-        let image: HTMLElement | null
-            = this.container.querySelector(LightboxImage.getClassSelector(this.classes.image));
-        if (!image) {
+        let content: HTMLElement | null
+            = this.container.querySelector(LightboxImage.getClassSelector(this.classes.content));
+        if (!content) {
             return;
         }
 
-        if (image instanceof HTMLImageElement) {
-            image.src = this.source;
+        if (content instanceof HTMLImageElement) {
+            content.src = this.source;
             return;
         }
 
-        image = image.querySelector('img');
-        if (image && image instanceof HTMLImageElement) {
-            image.src = this.source;
+        content = content.querySelector('img');
+        if (content && content instanceof HTMLImageElement) {
+            content.src = this.source;
         }
     }
 
