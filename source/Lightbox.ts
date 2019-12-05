@@ -48,7 +48,7 @@ export class Lightbox {
      * @param source html string
      * @param options Override default options
      */
-    constructor(source: string, options?: Partial<Overrideables>) {
+    constructor(source: string = '', options: Partial<Overrideables> = {}) {
         this.source = source;
 
         this.classes = Object.assign({

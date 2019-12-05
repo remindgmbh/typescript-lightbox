@@ -18,8 +18,8 @@ export class LightboxImage extends Lightbox {
         }
     };
 
-    constructor(source: string, options: Partial<Overrideables> = LightboxImage.imageDefaults) {
-        super(source, options);
+    constructor(source: string = '', options: Partial<Overrideables> = {}) {
+        super(source, Object.assign(LightboxImage.imageDefaults, options));
     }
 
     /**
