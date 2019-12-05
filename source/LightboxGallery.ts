@@ -35,7 +35,7 @@ export class LightboxGallery extends LightboxImage {
     protected pagination: HTMLElement;
     protected thumbnails: HTMLElement;
 
-    constructor(source: string, sources: string[], options?: Partial<LightboxGalleryOptions>) {
+    constructor(source: string = '', sources: string[] = [], options?: Partial<LightboxGalleryOptions>) {
         super(source, options);
 
         this.sources = sources;
