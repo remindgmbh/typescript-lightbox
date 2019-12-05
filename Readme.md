@@ -77,6 +77,7 @@ lightbox.detach();
 | ------------- | ------- | --------------------------------- | ------------------------------------------------------------- |
 | source        | string  | ```''```                          | Ein Html String der ausgeben wird                             |
 | options       | object  | {classes: {...}, functions: {...}}| Zum Überschreiben von CSS-Classes und Funktion für die Ausgabe|
+
 #### Funktionen 
 | Parameter         | Type                                                   |
 | ------------      | ------------------------------------------------------ |
