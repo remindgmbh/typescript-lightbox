@@ -5,8 +5,7 @@ export interface LightboxFunctions {
     createFooter: (className: string) => HTMLElement,
     createHeader: (className: string) => HTMLElement,
     createCloseButton: (className: string) => HTMLElement,
-    createContent: (source: string, className: string) => HTMLElement,
-    createLoader: (className: string) => HTMLElement
+    createContent: (source: string, className: string) => HTMLElement
 }
 
 export interface LightboxClasses {
@@ -28,7 +27,6 @@ export class Lightbox {
     private readonly CLASS_CLOSE_BUTTON: string = 'remind-lightbox__close-button';
     private readonly CLASS_FOOTER: string = 'remind-lightbox__footer';
     private readonly CLASS_HEADER: string = 'remind-lightbox__header';
-    private readonly CLASS_LOADER: string = 'remind-lightbox__loader';
     protected readonly CLASS_CONTENT: string = 'remind-lightbox__content';
     /* Lightbox html elements */
     protected container: HTMLElement;
@@ -59,8 +57,7 @@ export class Lightbox {
             closeButton: this.CLASS_CLOSE_BUTTON,
             footer: this.CLASS_FOOTER,
             header: this.CLASS_HEADER,
-            content: this.CLASS_CONTENT,
-            loader: this.CLASS_LOADER
+            content: this.CLASS_CONTENT
         }, (options && options.classes ? options.classes : {}));
 
         this.functions = Object.assign({
@@ -68,8 +65,7 @@ export class Lightbox {
             createFooter: Lightbox.createElement,
             createHeader: Lightbox.createElement,
             createCloseButton: Lightbox.createElement,
-            createContent: Lightbox.createHtmlElement,
-            createLoader: Lightbox.createElement
+            createContent: Lightbox.createHtmlElement
         }, (options && options.functions ? options.functions : {}));
     }
 
@@ -105,11 +101,7 @@ export class Lightbox {
     }
 
     protected buildContent(): void {
-        if (this.source) {
-            this.content = this.functions.createContent(this.source, this.classes.content);
-        } else {
-            this.content = this.functions.createLoader(this.classes.loader);
-        }
+        this.content = this.functions.createContent(this.source, this.classes.content);
     }
 
     /**

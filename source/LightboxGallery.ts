@@ -19,7 +19,7 @@ export interface LightboxGalleryOptions extends Overrideables{
 export class LightboxGallery extends LightboxImage {
     private readonly CLASS_THUMBNAILS: string = 'remind-lightbox__thumbnails';
     private readonly CLASS_THUMBNAIL: string = 'remind-lightbox__thumbnail';
-    private readonly CLASS_PAGINATION: string = 'remind-lightbox__counter';
+    private readonly CLASS_PAGINATION: string = 'remind-lightbox__pagination';
     private readonly CLASS_PAGINATION_CURRENT: string = 'remind-lightbox__current';
     private readonly CLASS_PAGINATION_MAX: string = 'remind-lightbox__max';
     private readonly CLASS_NEXT: string = 'remind-lightbox__next';
@@ -221,7 +221,7 @@ export class LightboxGallery extends LightboxImage {
      * @param source
      */
     public setSource(source: string): void {
-        super.setSource(source);
+        this.source = source;
         this.index = this.getIndexBySource(source);
 
         let counter: HTMLElement | null
