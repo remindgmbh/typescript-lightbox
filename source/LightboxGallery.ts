@@ -95,7 +95,7 @@ export class LightboxGallery extends LightboxImage {
             next.addEventListener('click', this.next.bind(this));
         }
 
-        let prev: HTMLElement | null = this.container.querySelector(LightboxImage.getClassSelector(this.classes.next));
+        let prev: HTMLElement | null = this.container.querySelector(LightboxImage.getClassSelector(this.classes.prev));
         if (prev) {
             prev.addEventListener('click', this.prev.bind(this));
         }
@@ -117,6 +117,22 @@ export class LightboxGallery extends LightboxImage {
                 this.classes.paginationMax);
 
             this.header.prepend(this.pagination);
+        }
+    }
+
+    /**
+     * Override build canvas
+     * Add next / prev element
+     */
+    protected buildCanvas(): void {
+        super.buildCanvas();
+
+        if (this.content) {
+            let next: HTMLElement = this.functions.createNext(this.classes.next);
+            this.content.after(next);
+
+            let prev: HTMLElement = this.functions.createNext(this.classes.prev);
+            this.content.before(prev);
         }
     }
 
@@ -193,7 +209,7 @@ export class LightboxGallery extends LightboxImage {
      */
     public next(): void {
         let index = this.index + 1;
-        if (index < this.sources.length) {
+        if (index >= this.sources.length) {
             return;
         }
 
@@ -207,7 +223,7 @@ export class LightboxGallery extends LightboxImage {
      */
     public prev(): void {
         let index = this.index - 1;
-        if (index > 0) {
+        if (index < 0) {
             return;
         }
 
@@ -223,6 +239,10 @@ export class LightboxGallery extends LightboxImage {
     public setSource(source: string): void {
         this.source = source;
         this.index = this.getIndexBySource(source);
+
+        if (!this.container) {
+            return;
+        }
 
         let counter: HTMLElement | null
             = this.container.querySelector(LightboxImage.getClassSelector(this.classes.paginationCurrent));
