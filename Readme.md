@@ -147,6 +147,12 @@ lightbox.detach();
 | source        | string  | ```''```                          | Pfad zur Bild Datei                                           |
 | options       | object  | {classes: {...}, functions: {...}}| Zum Überschreiben von CSS-Classes und Funktion für die Ausgabe|
 
+#### Funktionen 
+| Parameter        | Type                                                                                                                |
+| ------------     | ------------------------------------------------------------------------------------------------------------------- |
+| ...              | ...                                                                                                                 |
+| createContent    | (imgString: string, className: string) => HtmlElement                                                               |
+
 ### LightboxGallery
 
 #### Parameter
