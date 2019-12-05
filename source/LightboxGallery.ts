@@ -246,4 +246,13 @@ export class LightboxGallery extends LightboxImage {
             image.src = this.source;
         }
     }
+
+    /**
+     * Set sources
+     *
+     * @param sources
+     */
+    public setSources(sources: string[]): void {
+        this.sources = sources;
+    }
 }
