@@ -153,6 +153,26 @@ export class Lightbox {
     }
 
     /**
+     * Append to element with target class
+     * Workaround for overwritten output
+     *
+     * @param target
+     * @param targetClassName
+     * @param element
+     */
+    protected static prependToClass(target: HTMLElement, targetClassName: string, element: HTMLElement): void {
+        if (target.classList.contains(targetClassName)) {
+            target.prepend(element);
+            return;
+        }
+
+        let innerTarget: HTMLElement | null = target.querySelector(Lightbox.getClassSelector(targetClassName));
+        if (innerTarget) {
+            innerTarget.prepend(element);
+        }
+    }
+
+    /**
      * Static default function to create html div element with className
      *
      * @param className

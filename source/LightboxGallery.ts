@@ -116,7 +116,7 @@ export class LightboxGallery extends LightboxImage {
                 this.classes.paginationCurrent,
                 this.classes.paginationMax);
 
-            this.header.prepend(this.pagination);
+            LightboxImage.prependToClass(this.header, this.classes.header, this.pagination);
         }
     }
 
@@ -154,7 +154,7 @@ export class LightboxGallery extends LightboxImage {
                 LightboxImage.appendToClass(this.thumbnails, this.classes.thumbnails, thumbnail);
             }
 
-            this.footer.append(this.thumbnails);
+            LightboxImage.appendToClass(this.footer, this.classes.footer, this.thumbnails);
         }
     }
 
