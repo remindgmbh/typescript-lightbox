@@ -108,7 +108,7 @@ export class Lightbox {
      * Create canvas div and add css class
      */
     protected buildCanvas(): void {
-        this.canvas = this.functions.createHeader(this.classes.canvas);
+        this.canvas = this.functions.createCanvas(this.classes.canvas);
 
         this.buildContent();
         this.canvas.append(this.content);
