@@ -9,9 +9,9 @@ export class LightboxImage extends Lightbox {
 
     protected source: string = '';
 
-    protected static imageDefaults: Partial<Overrideables> = {
+    protected imageDefaults = {
         classes: {
-            content: 'remind-lightbox__image'
+            content: this.CLASS_CONTENT
         },
         functions: {
             createContent: LightboxImage.createImage
@@ -19,7 +19,10 @@ export class LightboxImage extends Lightbox {
     };
 
     constructor(source: string = '', options: Partial<Overrideables> = {}) {
-        super(source, Object.assign(LightboxImage.imageDefaults, options));
+        super(source, options);
+
+        this.functions.createContent = options && options.functions && options.functions.createContent ? this.functions.createContent : this.imageDefaults.functions.createContent;
+        this.classes.content = options && options.classes && options.classes.content ? this.classes.content : this.imageDefaults.classes.content;
     }
 
     /**
