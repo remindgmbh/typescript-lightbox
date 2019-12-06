@@ -82,9 +82,9 @@ export class Lightbox {
         this.buildCanvas();
         this.buildFooter();
 
-        this.container.append(this.header);
-        this.container.append(this.canvas);
-        this.container.append(this.footer);
+        Lightbox.appendToClass(this.container, this.classes.lightbox, this.header);
+        Lightbox.appendToClass(this.container, this.classes.lightbox, this.canvas);
+        Lightbox.appendToClass(this.container, this.classes.lightbox, this.footer);
 
         this.bindEvents();
     }
@@ -111,7 +111,7 @@ export class Lightbox {
         this.canvas = this.functions.createCanvas(this.classes.canvas);
 
         this.buildContent();
-        this.canvas.append(this.content);
+        Lightbox.appendToClass(this.canvas, this.classes.canvas, this.content);
     }
 
     /**
@@ -122,7 +122,7 @@ export class Lightbox {
         this.header = this.functions.createHeader(this.classes.header);
 
         this.closeButton = this.functions.createCloseButton(this.classes.closeButton);
-        this.header.append(this.closeButton);
+        Lightbox.appendToClass(this.header, this.classes.header, this.closeButton);
     }
 
     /**
@@ -130,6 +130,26 @@ export class Lightbox {
      */
     protected buildFooter(): void {
         this.footer = this.functions.createFooter(this.classes.footer);
+    }
+
+    /**
+     * Append to element with target class
+     * Workaround for overwritten output
+     *
+     * @param target
+     * @param targetClassName
+     * @param element
+     */
+    protected static appendToClass(target: HTMLElement, targetClassName: string, element: HTMLElement): void {
+        if (target.classList.contains(targetClassName)) {
+            target.append(element);
+            return;
+        }
+
+        let innerTarget: HTMLElement | null = target.querySelector(Lightbox.getClassSelector(targetClassName));
+        if (innerTarget) {
+            innerTarget.append(element);
+        }
     }
 
     /**

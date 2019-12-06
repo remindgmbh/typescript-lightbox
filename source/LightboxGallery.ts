@@ -151,7 +151,7 @@ export class LightboxGallery extends LightboxImage {
                     this.sources[index],
                     this.classes.thumbnail);
 
-                this.thumbnails.append(thumbnail);
+                LightboxImage.appendToClass(this.thumbnails, this.classes.thumbnails, thumbnail);
             }
 
             this.footer.append(this.thumbnails);
