@@ -19,6 +19,7 @@ export interface LightboxGalleryOptions extends Overrideables{
 export class LightboxGallery extends LightboxImage {
     private readonly CLASS_THUMBNAILS: string = 'remind-lightbox__thumbnails';
     private readonly CLASS_THUMBNAIL: string = 'remind-lightbox__thumbnail';
+    private readonly CLASS_THUMBNAIL_ACTIVE: string = 'active';
     private readonly CLASS_PAGINATION: string = 'remind-lightbox__pagination';
     private readonly CLASS_PAGINATION_CURRENT: string = 'remind-lightbox__current';
     private readonly CLASS_PAGINATION_MAX: string = 'remind-lightbox__max';
@@ -48,6 +49,7 @@ export class LightboxGallery extends LightboxImage {
         this.classes = Object.assign({
             thumbnails: this.CLASS_THUMBNAILS,
             thumbnail: this.CLASS_THUMBNAIL,
+            thumbnailActive: this.CLASS_THUMBNAIL_ACTIVE,
             pagination: this.CLASS_PAGINATION,
             paginationCurrent: this.CLASS_PAGINATION_CURRENT,
             paginationMax: this.CLASS_PAGINATION_MAX,
@@ -204,6 +206,34 @@ export class LightboxGallery extends LightboxImage {
     }
 
     /**
+     * Add active class to active thumbnail
+     */
+    protected setActiveThumbnail(): void {
+        let activeThumbnail: HTMLElement | null
+            = this.container.querySelector(LightboxImage.getClassSelector(this.classes.thumbnail) + '.' + this.classes.thumbnailActive);
+        if (activeThumbnail) {
+            activeThumbnail.classList.remove(this.classes.thumbnailActive);
+        }
+
+        let thumbnails: NodeListOf<HTMLElement>
+            = this.container.querySelectorAll(LightboxImage.getClassSelector(this.classes.thumbnail));
+
+        for (let i: number = 0; i < thumbnails.length; i++) {
+            let thumbnail: HTMLElement = thumbnails.item(i);
+
+            if (thumbnail instanceof HTMLImageElement && thumbnail.src == this.source) {
+                thumbnail.classList.add(this.classes.thumbnailActive);
+                return;
+            }
+
+            let image : HTMLImageElement | null = thumbnail.querySelector('img');
+            if (image && image.src == this.source) {
+                image.classList.add(this.classes.thumbnailActive);
+            }
+        }
+    }
+
+    /**
      * Check for next source
      * Set source and index
      */
@@ -240,9 +270,12 @@ export class LightboxGallery extends LightboxImage {
         this.source = source;
         this.index = this.getIndexBySource(source);
 
+
         if (!this.container) {
             return;
         }
+
+        this.setActiveThumbnail();
 
         let counter: HTMLElement | null
             = this.container.querySelector(LightboxImage.getClassSelector(this.classes.paginationCurrent));
