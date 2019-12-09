@@ -67,6 +67,15 @@ export class LightboxGallery extends LightboxImage {
     }
 
     /**
+     * Override create method and set initial active thumbnail
+     */
+    protected create(): void {
+        super.create();
+
+        this.setActiveThumbnail();
+    }
+
+    /**
      * Override bind events
      * Add click on thumbnail to switch gallery image
      * Add click on next / prev element
