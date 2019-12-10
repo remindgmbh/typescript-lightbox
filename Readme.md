@@ -44,8 +44,6 @@ einer package.json eingetragen werden.
 
 ```
 let lightbox: Lightbox = new Lightbox('<div>Ein Html string</div>');
-// Create html
-lightbox.create();
 // Attach html to dochument body
 lightbox.attach();
 // Change source
@@ -154,6 +152,13 @@ lightbox.detach();
 | createContent    | (imgString: string, className: string) => HtmlElement                                                               |
 
 ### LightboxGallery
+
+#### Zusätzliche öffentliche Methoden
+| Method                              | Description                                              |
+| ----------------------------------  | -------------------------------------------------------- |
+| next(): void                        | Setze das nächste Bild in den sources als aktives Bild   |
+| prev(): void                        | Setze das vorherige Bild in den sources als aktives Bild |
+| setSources(sources: string[]): void | Setze neue sources                                       |
 
 #### Parameter
 | Parameter     | Type     | Default                           | Description                                                   |
