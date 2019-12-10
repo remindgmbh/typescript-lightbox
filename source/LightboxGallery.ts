@@ -40,8 +40,8 @@ export class LightboxGallery extends LightboxImage {
         super(source, options);
 
         this.sources = sources;
-        this.showThumbnails = options && options.showThumbnails ? options.showThumbnails : this.showThumbnails;
-        this.showPagination = options && options.showPagination ? options.showPagination : this.showPagination;
+        this.showThumbnails = options && !options.showThumbnails && options.showThumbnails != undefined ? options.showThumbnails : this.showThumbnails;
+        this.showPagination = options && !options.showPagination && options.showPagination != undefined ? options.showPagination : this.showPagination;
 
         this.source = source ? source : this.sources[0];
         this.index = this.getIndexBySource(this.source);
@@ -279,7 +279,6 @@ export class LightboxGallery extends LightboxImage {
         this.source = source;
         this.index = this.getIndexBySource(source);
 
-
         if (!this.container) {
             return;
         }
@@ -316,5 +315,12 @@ export class LightboxGallery extends LightboxImage {
      */
     public setSources(sources: string[]): void {
         this.sources = sources;
+        this.setSource(sources[0]);
+
+        let html: HTMLElement | null = document.body.querySelector(LightboxImage.getClassSelector(this.classes.lightbox));
+        if (html) {
+            this.detach();
+            this.attach();
+        }
     }
 }

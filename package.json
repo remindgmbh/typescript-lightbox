@@ -1,6 +1,6 @@
 {
   "name": "@remindgmbh/lightbox",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Lightbox library",
   "main": "index.js",
   "dependencies": {
@@ -8,7 +8,8 @@
     "typescript": "^3.7.2"
   },
   "scripts": {
-    "postinstall": "tsc -p ."
+    "install": "tsc -p .",
+    "test": "nyc mocha"
   },
   "repository": {
     "type": "git",
@@ -19,6 +20,16 @@
   "private": true,
   "devDependencies": {
     "tslint": "^5.10.0",
-    "@types/node": "^12.12.14"
+    "@types/node": "^12.12.14",
+    "@types/chai": "^4.2.6",
+    "@types/mocha": "^5.2.7",
+    "canvas": "^2.6.0",
+    "chai": "^4.2.0",
+    "jsdom": "^15.2.1",
+    "jsdom-global": "^3.0.2",
+    "mocha": "^6.2.2",
+    "mocha-junit-reporter": "^1.23.1",
+    "nyc": "^14.1.1",
+    "ts-node": "^8.5.4"
   }
 }

@@ -213,8 +213,13 @@ export class Lightbox {
     public setSource(source: string): void {
         this.source = source;
 
+        if (!this.container) {
+            return;
+        }
+
         let canvas: HTMLElement | null
             = this.container.querySelector(Lightbox.getClassSelector(this.classes.canvas));
+
         if (canvas) {
             this.buildContent();
             canvas.innerHTML = this.content.outerHTML;

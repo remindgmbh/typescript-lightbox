@@ -16,7 +16,6 @@
     "noUnusedParameters": true,
     "strictNullChecks": true
   },
-  "files": [
-    "./index.ts"
-  ]
+  "files": ["index.ts"],
+  "include": [ "source" ]
 }
