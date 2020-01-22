@@ -39,11 +39,12 @@ export class LightboxGallery extends LightboxImage {
     constructor(source: string = '', sources: string[] = [], options?: Partial<LightboxGalleryOptions>) {
         super(source, options);
 
-        this.sources = sources;
+        this.sources =  [...new Set(sources)];
         this.showThumbnails = options && !options.showThumbnails && options.showThumbnails != undefined ? options.showThumbnails : this.showThumbnails;
         this.showPagination = options && !options.showPagination && options.showPagination != undefined ? options.showPagination : this.showPagination;
 
         this.source = source ? source : this.sources[0];
+
         this.index = this.getIndexBySource(this.source);
 
         this.classes = Object.assign({
@@ -90,6 +91,12 @@ export class LightboxGallery extends LightboxImage {
             let thumbnail: HTMLElement = thumbnails.item(i);
 
             let src: string = thumbnail instanceof HTMLImageElement ? thumbnail.src : '';
+            let origin: string = window.location.origin;
+
+            /* If local src, remove domain from string */
+            if (src.indexOf(origin) > -1) {
+                src = src.replace(origin, '');
+            }
 
             if (!src) {
                 let thumbnailImage: HTMLImageElement | null = thumbnail.querySelector('img');
@@ -314,7 +321,8 @@ export class LightboxGallery extends LightboxImage {
      * @param sources
      */
     public setSources(sources: string[]): void {
-        this.sources = sources;
+        /* [...new Set(Array)] removes duplicates from array */
+        this.sources = [...new Set(sources)];
         this.setSource(sources[0]);
 
         let html: HTMLElement | null = document.body.querySelector(LightboxImage.getClassSelector(this.classes.lightbox));
