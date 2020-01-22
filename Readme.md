@@ -6,7 +6,7 @@ Typescript Modul für die Ausgabe von Lightboxen
 ![remind-badge](https://img.shields.io/badge/author-REMIND-black.svg?style=flat-square)
 ![typescript-badge](https://img.shields.io/badge/TypeScript-3.7.2-green.svg?style=flat-square)
 ![license-badge](https://img.shields.io/badge/license-BSD--3--Clause-blue.svg?style=flat-square)
-![version-badge](https://img.shields.io/badge/version-1.0.0-lightgrey.svg?style=flat-square)
+![version-badge](https://img.shields.io/badge/version-1.1.0-lightgrey.svg?style=flat-square)
 
 --------------------------------------------------------------------------------
 
