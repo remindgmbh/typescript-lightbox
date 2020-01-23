@@ -39,7 +39,7 @@ export class LightboxGallery extends LightboxImage {
     constructor(source: string = '', sources: string[] = [], options?: Partial<LightboxGalleryOptions>) {
         super(source, options);
 
-        this.sources =  [...new Set(sources)];
+        this.sources =  Array.from(new Set(sources));
         this.showThumbnails = options && !options.showThumbnails && options.showThumbnails != undefined ? options.showThumbnails : this.showThumbnails;
         this.showPagination = options && !options.showPagination && options.showPagination != undefined ? options.showPagination : this.showPagination;
 
@@ -322,7 +322,7 @@ export class LightboxGallery extends LightboxImage {
      */
     public setSources(sources: string[]): void {
         /* [...new Set(Array)] removes duplicates from array */
-        this.sources = [...new Set(sources)];
+        this.sources = Array.from(new Set(sources));
         this.setSource(sources[0]);
 
         let html: HTMLElement | null = document.body.querySelector(LightboxImage.getClassSelector(this.classes.lightbox));
