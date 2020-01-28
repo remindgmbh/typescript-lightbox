@@ -35,7 +35,7 @@ Typescript Modul für die Ausgabe von Lightboxen
 Zum Einbinden des TypeScript Moduls muss folgende Abhängigkeit in den Dependencies
 einer package.json eingetragen werden.
 
-```"@remindgmbh/lightbox": "git+ssh://git@bitbucket.org:remindgmbh/remind-lightbox.git#1.0.0"```
+```"@remindgmbh/lightbox": "git+ssh://git@bitbucket.org:remindgmbh/remind-lightbox.git#1.1.0"```
 
 --------------------------------------------------------------------------------
 
