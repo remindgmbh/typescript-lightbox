@@ -213,17 +213,13 @@ export class LightboxGallery extends LightboxImage {
      * @return number
      */
     private getIndexByItem(item: LightboxItem): number {
-        if (!item.image) {
-            return -1;
-        }
-
         for (let i: number = 0; i < this.items.length; i++) {
-            if (this.items[i].image === item.image) {
+            if (this.items[i] === item) {
                 return i;
             }
         }
 
-        return -1;
+        return 0;
     }
 
     /**
@@ -238,7 +234,7 @@ export class LightboxGallery extends LightboxImage {
      * Add active class to active thumbnail
      */
     protected setActiveThumbnail(): void {
-        if (!this.container) {
+        if (!this.thumbnails || !this.container) {
             return;
         }
 
@@ -315,6 +311,7 @@ export class LightboxGallery extends LightboxImage {
         if (!(image instanceof HTMLImageElement)) {
             return;
         }
+        image.src = this.item.image;
 
         let headline: HTMLElement | null
             = this.container.querySelector(LightboxImage.getClassSelector(this.classes.headline));

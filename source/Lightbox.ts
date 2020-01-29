@@ -191,29 +191,47 @@ export class Lightbox {
      * @param data
      */
     protected static createElement(className: string, data: {[key: string]: string} = {}): HTMLElement {
-        return elementFactory('div', {className: className, dataset: data});
+        let element: HTMLElement = elementFactory('div', {
+            className: className
+        });
+
+        for (let key in data) {
+            element.dataset[key] = data[key];
+        }
+
+        return element;
     }
 
     /**
      * Static default function to create html div element with className and innerHTML
      */
     protected static createHtmlElement(html: string, className: string, data: {[key: string]: string} = {}): HTMLElement {
-        return elementFactory('div', {
+        let element: HTMLElement = elementFactory('div', {
             className: className,
-            innerHTML: html,
-            dataset: data
+            innerHTML: html
         });
+
+        for (let key in data) {
+            element.dataset[key] = data[key];
+        }
+
+        return element;
     }
 
     /**
      * Static default function to create html div element with className and innerHTML
      */
     protected static createImageElement(src: string, className: string, data: {[key: string]: string} = {}): HTMLElement {
-        return elementFactory('img', {
+        let element: HTMLElement = elementFactory('img', {
             className: className,
-            src: src,
-            dataset: data
+            src: src
         });
+
+        for (let key in data) {
+            element.dataset[key] = data[key];
+        }
+
+        return element;
     }
 
     /**
@@ -256,9 +274,12 @@ export class Lightbox {
      */
     public attach(): void {
         let html: HTMLElement | null = document.body.querySelector(Lightbox.getClassSelector(this.classes.lightbox));
-        if (!html && this.container) {
+        if (!html) {
             this.create();
-            document.body.append(this.container);
+
+            if (this.container) {
+                document.body.append(this.container);
+            }
         }
     }
 
@@ -267,7 +288,7 @@ export class Lightbox {
      */
     public detach(): void {
         let html: HTMLElement | null = document.body.querySelector(Lightbox.getClassSelector(this.classes.lightbox));
-        if (html && this. container) {
+        if (html && this.container) {
             this.container.remove();
         }
     }
