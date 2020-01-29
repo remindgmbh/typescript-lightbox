@@ -6,7 +6,7 @@ Typescript Modul für die Ausgabe von Lightboxen
 ![remind-badge](https://img.shields.io/badge/author-REMIND-black.svg?style=flat-square)
 ![typescript-badge](https://img.shields.io/badge/TypeScript-3.7.2-green.svg?style=flat-square)
 ![license-badge](https://img.shields.io/badge/license-BSD--3--Clause-blue.svg?style=flat-square)
-![version-badge](https://img.shields.io/badge/version-1.1.0-lightgrey.svg?style=flat-square)
+![version-badge](https://img.shields.io/badge/version-2.0.0-lightgrey.svg?style=flat-square)
 
 --------------------------------------------------------------------------------
 
@@ -73,7 +73,7 @@ lightbox.detach();
 #### Parameter
 | Parameter     | Type    | Default                           | Description                                                   |
 | ------------- | ------- | --------------------------------- | ------------------------------------------------------------- |
-| source        | string  | ```''```                          | Ein Html String der ausgeben wird                             |
+| html        | string  | ```''```                          | Ein Html String der ausgeben wird                             |
 | options       | object  | {classes: {...}, functions: {...}}| Zum Überschreiben von CSS-Classes und Funktion für die Ausgabe|
 
 #### Funktionen 
@@ -142,14 +142,14 @@ lightbox.detach();
 #### Parameter
 | Parameter     | Type    | Default                           | Description                                                   |
 | ------------- | ------- | --------------------------------- | ------------------------------------------------------------- |
-| source        | string  | ```''```                          | Pfad zur Bild Datei                                           |
+| item        | LightboxItem  | ```{image: '', headline: '', text: ''}``` | Pfad zur Bild Datei, Überschrift und Text zum Bild |
 | options       | object  | {classes: {...}, functions: {...}}| Zum Überschreiben von CSS-Classes und Funktion für die Ausgabe|
 
 #### Funktionen 
 | Parameter        | Type                                                                                                                |
 | ------------     | ------------------------------------------------------------------------------------------------------------------- |
 | ...              | ...                                                                                                                 |
-| createContent    | (imgString: string, className: string) => HtmlElement                                                               |
+| createImage    | createImage: (item: LightboxItem, classNameOuter: string, classNameImage: string, classNameHeadline: string, classNameText: string) => HTMLElement                                                       |
 
 ### LightboxGallery
 
@@ -158,13 +158,14 @@ lightbox.detach();
 | ----------------------------------  | -------------------------------------------------------- |
 | next(): void                        | Setze das nächste Bild in den sources als aktives Bild   |
 | prev(): void                        | Setze das vorherige Bild in den sources als aktives Bild |
-| setSources(sources: string[]): void | Setze neue sources                                       |
+| setItems(items: LightboxItem[]): void | Setze neue Items                                       |
+| setItem(item: LightboxItem): void | Setze ausgwähltes Item                                     |
 
 #### Parameter
 | Parameter     | Type     | Default                           | Description                                                   |
 | ------------- | -------  | --------------------------------- | ------------------------------------------------------------- |
-| source        | string   | ```''```                          | Pfad zur Bild Datei, Erstes Bild was ausgeben wird (Fallback erstes bild von sources) |
-| sources       | string[] | ```''```                          | Pfad zur Bild Datei                                           |
+| item        | LightboxItem   | ```{image: '', headline: '', text: ''}```                         | Pfad zur Bild Datei, Überschrift und Text zum Bild |
+| items       | LightboxItem[] | ```[]```                          |  |
 | options       | object   | {showThumbnails: false, showPagination: false, classes: {...}, functions: {...}}| Erweitert um die Optionen zur Anzeige der Thumbnails und der Pagination |
 
 #### Funktionen 
@@ -200,14 +201,20 @@ lightbox.detach();
 		<div class="remind-lightbox__close-button"></div>
 	</div>
 	<div class="remind-lightbox__canvas">
-		<img class="remind-lightbox__image"	source="###source###">
+        <div class="remind-lightbox__prev"/>
+        <div class="remind-lightbox__content">
+	    <img class="remind-lightbox__image"	src="###item.image###"/>
+            <h2 class="remind-lightbox__headline">###item.headline###</h2>
+            <span class="remind-lightbox__text">###item.text###</span>
+        </div>
+        <div class="remind-lightbox__prev"/>
 	</div>
 	<div class="remind-lightbox__footer">
 		<div class="remind-lightbox__thumbnails">
-			<img class="remind-lightbox__thumbnail" src="###source###">
-			<img class="remind-lightbox__thumbnail" src="###source###">
-			<img class="remind-lightbox__thumbnail" src="###source###">
-			<img class="remind-lightbox__thumbnail" src="###source###">
+			<img class="remind-lightbox__thumbnail" src="###item.image###" data="###item###">
+			<img class="remind-lightbox__thumbnail" src="###item.image###" data="###item###">
+			<img class="remind-lightbox__thumbnail" src="###item.image###" data="###item###">
+			<img class="remind-lightbox__thumbnail" src="###item.image###" data="###item###">
 			...
 		</div>
 	</div>
