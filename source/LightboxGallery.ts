@@ -148,9 +148,15 @@ export class LightboxGallery extends LightboxImage {
 
         if (this.content) {
             let next: HTMLElement = this.functionsGalleryExtended.createNext(this.classes.next);
+            if ((this.index + 1) === this.items.length) {
+                next.classList.add(this.CLASS_STATUS_DISABLED);
+            }
             this.content.after(next);
 
             let prev: HTMLElement = this.functionsGalleryExtended.createNext(this.classes.prev);
+            if (this.index === 0) {
+                prev.classList.add(this.CLASS_STATUS_DISABLED);
+            }
             this.content.before(prev);
         }
     }
