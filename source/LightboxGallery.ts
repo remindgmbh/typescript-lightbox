@@ -25,6 +25,7 @@ export class LightboxGallery extends LightboxImage {
     private readonly CLASS_PAGINATION_MAX: string = 'remind-lightbox__max';
     private readonly CLASS_NEXT: string = 'remind-lightbox__next';
     private readonly CLASS_PREV: string = 'remind-lightbox__prev';
+    private readonly CLASS_STATUS_DISABLED: string = 'disabled';
 
     protected functionsGalleryExtended: LightboxGalleryFunctions;
 
@@ -36,10 +37,10 @@ export class LightboxGallery extends LightboxImage {
     protected pagination: HTMLElement | null = null;
     protected thumbnails: HTMLElement | null = null;
 
-    constructor(item: Partial<LightboxItem> = {}, sources: LightboxItem[] = [], options?: Partial<LightboxGalleryOverrideables>) {
+    constructor(item: Partial<LightboxItem> = {}, items: LightboxItem[] = [], options?: Partial<LightboxGalleryOverrideables>) {
         super(item, options);
 
-        this.items = Array.from(new Set(sources));
+        this.items = [...new Map(items.map(item => [item.image, item])).values()];
         this.showThumbnails = options && !options.showThumbnails && options.showThumbnails != undefined ? options.showThumbnails : this.showThumbnails;
         this.showPagination = options && !options.showPagination && options.showPagination != undefined ? options.showPagination : this.showPagination;
 
@@ -93,12 +94,16 @@ export class LightboxGallery extends LightboxImage {
 
         for (let i: number = 0; i < thumbnails.length; i++) {
             let thumbnail: HTMLElement = thumbnails.item(i);
-            let {image, headline, text}  = thumbnail.dataset;
+            let {image, headline, text} = thumbnail.dataset;
             headline = headline ? headline : '';
             text = text ? text : '';
 
             if (image) {
-                thumbnail.addEventListener('click', this.setItem.bind(this, {image: image, headline: headline, text: text}));
+                thumbnail.addEventListener('click', this.setItem.bind(this, {
+                    image: image,
+                    headline: headline,
+                    text: text
+                }));
             }
         }
 
@@ -300,6 +305,26 @@ export class LightboxGallery extends LightboxImage {
 
         this.setActiveThumbnail();
 
+        let prev: HTMLElement | null
+            = this.container.querySelector(LightboxImage.getClassSelector(this.classes.prev));
+        if (prev) {
+            if (this.index === 0) {
+                prev.classList.add(this.CLASS_STATUS_DISABLED);
+            } else {
+                prev.classList.remove(this.CLASS_STATUS_DISABLED);
+            }
+        }
+
+        let next: HTMLElement | null
+            = this.container.querySelector(LightboxImage.getClassSelector(this.classes.prev));
+        if (next) {
+            if ((this.index + 1) === this.items.length) {
+                next.classList.add(this.CLASS_STATUS_DISABLED);
+            } else {
+                next.classList.remove(this.CLASS_STATUS_DISABLED);
+            }
+        }
+
         let counter: HTMLElement | null
             = this.container.querySelector(LightboxImage.getClassSelector(this.classes.paginationCurrent));
         if (counter) {
@@ -337,7 +362,7 @@ export class LightboxGallery extends LightboxImage {
      */
     public setItems(items: LightboxItem[]): void {
         /* [...new Set(Array)] removes duplicates from array */
-        this.items = Array.from(new Set(items));
+        this.items = [...new Map(items.map(item => [item.image, item])).values()];
         this.setItem(items[0]);
 
         let html: HTMLElement | null = document.body.querySelector(LightboxImage.getClassSelector(this.classes.lightbox));
