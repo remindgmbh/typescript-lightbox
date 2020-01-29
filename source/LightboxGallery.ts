@@ -221,7 +221,7 @@ export class LightboxGallery extends LightboxImage {
      */
     private getIndexByItem(item: LightboxItem): number {
         for (let i: number = 0; i < this.items.length; i++) {
-            if (this.items[i] === item) {
+            if (JSON.stringify(this.items[i]) === JSON.stringify(item)) {
                 return i;
             }
         }
@@ -318,7 +318,7 @@ export class LightboxGallery extends LightboxImage {
         }
 
         let next: HTMLElement | null
-            = this.container.querySelector(LightboxImage.getClassSelector(this.classes.prev));
+            = this.container.querySelector(LightboxImage.getClassSelector(this.classes.next));
         if (next) {
             if ((this.index + 1) === this.items.length) {
                 next.classList.add(this.CLASS_STATUS_DISABLED);
