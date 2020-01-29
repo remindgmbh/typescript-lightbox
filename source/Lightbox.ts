@@ -29,27 +29,27 @@ export class Lightbox {
     private readonly CLASS_HEADER: string = 'remind-lightbox__header';
     protected readonly CLASS_CONTENT: string = 'remind-lightbox__content';
     /* Lightbox html elements */
-    protected container: HTMLElement;
-    protected canvas: HTMLElement;
-    protected footer: HTMLElement;
-    protected header: HTMLElement;
-    protected closeButton: HTMLElement;
-    protected content: HTMLElement;
+    protected container: HTMLElement | null = null;
+    protected canvas: HTMLElement | null = null;
+    protected footer: HTMLElement | null = null;
+    protected header: HTMLElement | null = null;
+    protected closeButton: HTMLElement | null = null;
+    protected content: HTMLElement | null = null;
 
     /* Objects for css classes & rendering function */
     protected classes: LightboxClasses;
     protected functions: LightboxFunctions;
 
-    protected source: string = '';
+    protected html: string = '';
 
     /**
      * Set default css classes & rendering function
      *
-     * @param source html string
+     * @param html html string
      * @param options Override default options
      */
-    constructor(source: string = '', options: Partial<Overrideables> = {}) {
-        this.source = source;
+    constructor(html: string = '', options: Partial<Overrideables> = {}) {
+        this.html = html;
 
         this.classes = Object.assign({
             lightbox: this.CLASS_LIGHTBOX,
@@ -94,6 +94,10 @@ export class Lightbox {
      * Parent method to bind more
      */
     protected bindEvents(): void {
+        if (!this.container) {
+            return;
+        }
+
         let closeBtn: HTMLElement | null = this.container.querySelector(Lightbox.getClassSelector(this.classes.closeButton));
         if (closeBtn) {
             closeBtn.addEventListener('click', this.detach.bind(this));
@@ -101,7 +105,7 @@ export class Lightbox {
     }
 
     protected buildContent(): void {
-        this.content = this.functions.createContent(this.source, this.classes.content);
+        this.content = this.functions.createContent(this.html, this.classes.content);
     }
 
     /**
@@ -140,7 +144,11 @@ export class Lightbox {
      * @param targetClassName
      * @param element
      */
-    protected static appendToClass(target: HTMLElement, targetClassName: string, element: HTMLElement): void {
+    protected static appendToClass(target: HTMLElement | null, targetClassName: string, element: HTMLElement | null): void {
+        if (!element || !target) {
+            return;
+        }
+
         if (target.classList.contains(targetClassName)) {
             target.append(element);
             return;
@@ -160,7 +168,11 @@ export class Lightbox {
      * @param targetClassName
      * @param element
      */
-    protected static prependToClass(target: HTMLElement, targetClassName: string, element: HTMLElement): void {
+    protected static prependToClass(target: HTMLElement | null, targetClassName: string, element: HTMLElement | null): void {
+        if (!element || !target) {
+            return;
+        }
+
         if (target.classList.contains(targetClassName)) {
             target.prepend(element);
             return;
@@ -176,18 +188,31 @@ export class Lightbox {
      * Static default function to create html div element with className
      *
      * @param className
+     * @param data
      */
-    protected static createElement(className: string): HTMLElement {
-        return elementFactory('div', {className: className});
+    protected static createElement(className: string, data: {[key: string]: string} = {}): HTMLElement {
+        return elementFactory('div', {className: className, dataset: data});
     }
 
     /**
      * Static default function to create html div element with className and innerHTML
      */
-    protected static createHtmlElement(source: string, className: string): HTMLElement {
+    protected static createHtmlElement(html: string, className: string, data: {[key: string]: string} = {}): HTMLElement {
         return elementFactory('div', {
             className: className,
-            innerHTML: source
+            innerHTML: html,
+            dataset: data
+        });
+    }
+
+    /**
+     * Static default function to create html div element with className and innerHTML
+     */
+    protected static createImageElement(src: string, className: string, data: {[key: string]: string} = {}): HTMLElement {
+        return elementFactory('img', {
+            className: className,
+            src: src,
+            dataset: data
         });
     }
 
@@ -206,12 +231,12 @@ export class Lightbox {
     }
 
     /**
-     * Set innerHTML source
+     * Set innerHTML html
      *
-     * @param source
+     * @param html
      */
-    public setSource(source: string): void {
-        this.source = source;
+    public setHtml(html: string): void {
+        this.html = html;
 
         if (!this.container) {
             return;
@@ -220,7 +245,7 @@ export class Lightbox {
         let canvas: HTMLElement | null
             = this.container.querySelector(Lightbox.getClassSelector(this.classes.canvas));
 
-        if (canvas) {
+        if (canvas && this.content) {
             this.buildContent();
             canvas.innerHTML = this.content.outerHTML;
         }
@@ -231,7 +256,7 @@ export class Lightbox {
      */
     public attach(): void {
         let html: HTMLElement | null = document.body.querySelector(Lightbox.getClassSelector(this.classes.lightbox));
-        if (!html) {
+        if (!html && this.container) {
             this.create();
             document.body.append(this.container);
         }
@@ -242,7 +267,7 @@ export class Lightbox {
      */
     public detach(): void {
         let html: HTMLElement | null = document.body.querySelector(Lightbox.getClassSelector(this.classes.lightbox));
-        if (html) {
+        if (html && this. container) {
             this.container.remove();
         }
     }

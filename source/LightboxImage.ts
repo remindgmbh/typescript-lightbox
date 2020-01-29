@@ -1,40 +1,67 @@
 import {elementFactory} from "@remindgmbh/util";
-import {Lightbox, Overrideables} from "./Lightbox";
+import {Lightbox, LightboxFunctions, Overrideables} from "./Lightbox";
+
+export interface LightboxItem {
+    image: string,
+    headline: string,
+    text: string
+}
+
+export interface LightboxImageFunctions extends LightboxFunctions {
+    createImage: (item: LightboxItem, classNameOuter: string, classNameImage: string, classNameHeadline: string, classNameText: string) => HTMLElement,
+}
 
 /**
  * LightboxImage - Light box with a single image
  */
 export class LightboxImage extends Lightbox {
-    protected readonly CLASS_CONTENT: string = 'remind-lightbox__image';
+    protected readonly CLASS_IMAGE: string = 'remind-lightbox__image';
+    protected readonly CLASS_HEADLINE: string = 'remind-lightbox__headline';
+    protected readonly CLASS_TEXT: string = 'remind-lightbox__text';
 
-    protected source: string = '';
-
-    protected imageDefaults = {
-        classes: {
-            content: this.CLASS_CONTENT
-        },
-        functions: {
-            createContent: LightboxImage.createImage
-        }
+    protected item: LightboxItem = {
+        image: '',
+        headline: '',
+        text: ''
     };
 
-    constructor(source: string = '', options: Partial<Overrideables> = {}) {
-        super(source, options);
+    protected functionsImageExtended: LightboxImageFunctions;
 
-        this.functions.createContent = options && options.functions && options.functions.createContent ? this.functions.createContent : this.imageDefaults.functions.createContent;
-        this.classes.content = options && options.classes && options.classes.content ? this.classes.content : this.imageDefaults.classes.content;
+    constructor(item: Partial<LightboxItem> = {}, options: Partial<Overrideables> = {}) {
+        super('', options);
+
+        this.item = {...this.item, ...item};
+
+        this.functionsImageExtended = Object.assign({
+            createImage: LightboxImage.createImage,
+        }, this.functions);
+    }
+
+    protected buildContent(): void {
+        this.content = LightboxImage.createImage(this.item, this.CLASS_CONTENT, this.CLASS_IMAGE, this.CLASS_HEADLINE, this.CLASS_CONTENT);
     }
 
     /**
      * Static function to thumbnail
      *
-     * @param source
-     * @param className
+     * @param item
+     * @param classNameOuter
+     * @param classNameImage
+     * @param classNameHeadline
+     * @param classNameText
      */
-    protected static createImage(source: string, className: string): HTMLElement {
-        return elementFactory('img', {
-            className: className,
-            src: source
-        });
+    protected static createImage(item: LightboxItem, classNameOuter: string, classNameImage: string, classNameHeadline: string, classNameText: string): HTMLElement {
+        let content: HTMLElement = elementFactory('div', {className: classNameOuter});
+
+        const image: HTMLElement = elementFactory('img', {className: classNameImage, src: item.image});
+        content.appendChild(image);
+
+        const headline: HTMLElement = elementFactory('h2', {className: classNameHeadline, innerText: item.headline});
+        content.appendChild(headline);
+
+        const text: HTMLElement = elementFactory('span', {className: classNameText, innerText: item.text});
+        content.appendChild(text);
+
+        return content;
     }
 }
