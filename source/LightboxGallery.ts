@@ -40,7 +40,9 @@ export class LightboxGallery extends LightboxImage {
     constructor(item: Partial<LightboxItem> = {}, items: LightboxItem[] = [], options?: Partial<LightboxGalleryOverrideables>) {
         super(item, options);
 
-        this.items = [...new Map(items.map(item => [item.image, item])).values()];
+        /* Removes duplicates objects from array */
+        this.items = Array.from(new Set(items.map(item => JSON.stringify(item)))).map(item => JSON.parse(item));
+
         this.showThumbnails = options && !options.showThumbnails && options.showThumbnails != undefined ? options.showThumbnails : this.showThumbnails;
         this.showPagination = options && !options.showPagination && options.showPagination != undefined ? options.showPagination : this.showPagination;
 
@@ -296,8 +298,8 @@ export class LightboxGallery extends LightboxImage {
      * @param item
      */
     public setItem(item: LightboxItem): void {
-        this.item = item;
         this.index = this.getIndexByItem(item);
+        this.item = this.getItemByIndex(this.index);
 
         if (!this.container) {
             return;
@@ -361,8 +363,8 @@ export class LightboxGallery extends LightboxImage {
      * @param items
      */
     public setItems(items: LightboxItem[]): void {
-        /* [...new Set(Array)] removes duplicates from array */
-        this.items = [...new Map(items.map(item => [item.image, item])).values()];
+        /* Removes duplicates objects from array */
+        this.items = Array.from(new Set(items.map(item => JSON.stringify(item)))).map(item => JSON.parse(item));
         this.setItem(items[0]);
 
         let html: HTMLElement | null = document.body.querySelector(LightboxImage.getClassSelector(this.classes.lightbox));
