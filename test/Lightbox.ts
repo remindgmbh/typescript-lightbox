@@ -1,7 +1,40 @@
 // import { expect } from 'chai'
 // import { Lightbox } from '../source/Lightbox'
-//
+// import { elementFactory } from "@remindgmbh/util/src/util";
+
 // describe('Lightbox', () => {
+//     /* Init lightbox, override createHeader for lueg bar  */
+//     let lightbox: Lightbox = new Lightbox(
+//         '<span id="test"></span>',
+//         {
+//             classes: {
+//                 header: 'test'
+//             },
+//             functions: {
+//                 createHeader: (className: string) => {
+//                     let container: HTMLElement = elementFactory('div', {
+//                         className: 'backgroundBlack'
+//                     });
+//
+//                     let header: HTMLDivElement = elementFactory('div', {
+//                         className: className
+//                     });
+//
+//                     container.append(header);
+//
+//                     return container;
+//                 }
+//             }
+//         }
+//     );
+//
+//     lightbox.attach();
+//
+//     let testElements: NodeListOf<HTMLElement> = document.querySelectorAll('.test, #test, .backgroundBlack');
+//
+//     expect(testElements.length).to.equal(3);
+//
+// });
 //     const testHeaderClassName: string = 'testHeader';
 //
 //     const lightbox: Lightbox = new Lightbox('', {

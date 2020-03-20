@@ -32,15 +32,17 @@ export class LightboxImage extends Lightbox {
 
         this.item = {...this.item, ...item};
 
-        this.classes = Object.assign({
+        this.classes = {
             image: this.CLASS_IMAGE,
             headline: this.CLASS_HEADLINE,
-            text: this.CLASS_TEXT
-        }, this.classes);
+            text: this.CLASS_TEXT,
+            ...this.classes
+        };
 
-        this.functionsImageExtended = Object.assign({
+        this.functionsImageExtended = {
             createImage: LightboxImage.createImage,
-        }, this.functions);
+            ...this.functions
+        };
     }
 
     protected buildContent(): void {

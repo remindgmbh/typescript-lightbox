@@ -51,22 +51,22 @@ export class Lightbox {
     constructor(html: string = '', options: Partial<Overrideables> = {}) {
         this.html = html;
 
-        this.classes = Object.assign({
+        this.classes = {
             lightbox: this.CLASS_LIGHTBOX,
             canvas: this.CLASS_CANVAS,
             closeButton: this.CLASS_CLOSE_BUTTON,
             footer: this.CLASS_FOOTER,
             header: this.CLASS_HEADER,
             content: this.CLASS_CONTENT
-        }, (options && options.classes ? options.classes : {}));
+        , ...options.classes};
 
-        this.functions = Object.assign({
+        this.functions = {
             createCanvas: Lightbox.createElement,
             createFooter: Lightbox.createElement,
             createHeader: Lightbox.createElement,
             createCloseButton: Lightbox.createElement,
             createContent: Lightbox.createHtmlElement
-        }, (options && options.functions ? options.functions : {}));
+        , ...options.functions};
     }
 
     /**

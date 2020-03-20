@@ -50,7 +50,7 @@ export class LightboxGallery extends LightboxImage {
 
         this.index = this.getIndexByItem(this.item);
 
-        this.classes = Object.assign({
+        this.classes = {
             thumbnails: this.CLASS_THUMBNAILS,
             thumbnail: this.CLASS_THUMBNAIL,
             thumbnailActive: this.CLASS_THUMBNAIL_ACTIVE,
@@ -58,16 +58,18 @@ export class LightboxGallery extends LightboxImage {
             paginationCurrent: this.CLASS_PAGINATION_CURRENT,
             paginationMax: this.CLASS_PAGINATION_MAX,
             next: this.CLASS_NEXT,
-            prev: this.CLASS_PREV
-        }, this.classes);
+            prev: this.CLASS_PREV,
+            ...this.classes
+        };
 
-        this.functionsGalleryExtended = Object.assign({
+        this.functionsGalleryExtended = {
             createThumbnails: LightboxImage.createElement,
             createThumbnail: LightboxImage.createImageElement,
             createPagination: LightboxGallery.createPagination,
             createNext: LightboxImage.createElement,
-            createPrev: LightboxImage.createElement
-        }, this.functionsImageExtended);
+            createPrev: LightboxImage.createElement,
+            ...this.functionsImageExtended
+        };
     }
 
     /**

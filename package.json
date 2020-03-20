@@ -5,7 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "@remindgmbh/util": "git+ssh://git@bitbucket.org:remindgmbh/remind-util.git",
-    "typescript": "^3.7.2"
+    "typescript": "^3.8.3"
   },
   "scripts": {
     "install": "tsc -p .",
@@ -20,7 +20,7 @@
   "private": true,
   "devDependencies": {
     "tslint": "^5.10.0",
-    "@types/node": "^12.12.14",
+    "@types/node": "^12.12.30",
     "@types/chai": "^4.2.6",
     "@types/mocha": "^5.2.7",
     "canvas": "^2.6.0",
