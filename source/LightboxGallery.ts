@@ -1,8 +1,8 @@
 import {elementFactory} from "@remindgmbh/util";
-import {LightboxFunctions, Overrideables} from "./Lightbox";
-import {LightboxImage, LightboxItem} from "./LightboxImage";
+import {Overrideables} from "./Lightbox";
+import {LightboxImage, LightboxImageFunctions, LightboxItem} from "./LightboxImage";
 
-export interface LightboxGalleryFunctions extends LightboxFunctions {
+export interface LightboxGalleryFunctions extends LightboxImageFunctions {
     createThumbnails: (className: string) => HTMLElement,
     createThumbnail: (src: string, className: string, data?: { [key: string]: string }) => HTMLElement,
     createPagination: (index: number, maxIndex: number, className: string, classNameCurrent: string, classNameMax: string) => HTMLElement,
@@ -37,7 +37,7 @@ export class LightboxGallery extends LightboxImage {
     protected pagination: HTMLElement | null = null;
     protected thumbnails: HTMLElement | null = null;
 
-    constructor(item: Partial<LightboxItem> = {}, items: LightboxItem[] = [], options?: Partial<LightboxGalleryOverrideables>) {
+    constructor(item: Partial<LightboxItem> = {}, items: LightboxItem[] = [], options: Partial<LightboxGalleryOverrideables>) {
         super(item, options);
 
         /* Removes duplicates objects from array */

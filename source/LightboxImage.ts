@@ -46,7 +46,13 @@ export class LightboxImage extends Lightbox {
     }
 
     protected buildContent(): void {
-        this.content = LightboxImage.createImage(this.item, this.CLASS_CONTENT, this.CLASS_IMAGE, this.CLASS_HEADLINE, this.CLASS_TEXT);
+        this.content = this.functionsImageExtended.createImage(
+            this.item,
+            this.classes.content,
+            this.classes.image,
+            this.classes.headline,
+            this.classes.text
+        );
     }
 
     /**
