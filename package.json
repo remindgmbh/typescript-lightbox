@@ -17,7 +17,6 @@
     },
     "author": "Michael Didion <m.didion@remind.de> (https://www.remind.de/)",
     "license": "BSD-3-Clause",
-    "private": true,
     "devDependencies": {
         "@types/chai": "^4.2.14",
         "@types/jsdom-global": "^3.0.2",
