@@ -1,4 +1,4 @@
-import {elementFactory} from "@remindgmbh/util";
+import { elementFactory } from '@remindgmbh/typescript-utility-lib'
 
 export interface LightboxFunctions {
     createCanvas: (className: string) => HTMLElement,
@@ -22,25 +22,25 @@ export interface Overrideables {
  */
 export class Lightbox {
     /* CSS class constants */
-    private readonly CLASS_LIGHTBOX: string = 'remind-lightbox';
-    private readonly CLASS_CANVAS: string = 'remind-lightbox__canvas';
-    private readonly CLASS_CLOSE_BUTTON: string = 'remind-lightbox__close-button';
-    private readonly CLASS_FOOTER: string = 'remind-lightbox__footer';
-    private readonly CLASS_HEADER: string = 'remind-lightbox__header';
-    protected readonly CLASS_CONTENT: string = 'remind-lightbox__content';
+    private readonly CLASS_LIGHTBOX: string = 'remind-lightbox'
+    private readonly CLASS_CANVAS: string = 'remind-lightbox__canvas'
+    private readonly CLASS_CLOSE_BUTTON: string = 'remind-lightbox__close-button'
+    private readonly CLASS_FOOTER: string = 'remind-lightbox__footer'
+    private readonly CLASS_HEADER: string = 'remind-lightbox__header'
+    protected readonly CLASS_CONTENT: string = 'remind-lightbox__content'
     /* Lightbox html elements */
-    protected container: HTMLElement | null = null;
-    protected canvas: HTMLElement | null = null;
-    protected footer: HTMLElement | null = null;
-    protected header: HTMLElement | null = null;
-    protected closeButton: HTMLElement | null = null;
-    protected content: HTMLElement | null = null;
+    protected container: HTMLElement | null = null
+    protected canvas: HTMLElement | null = null
+    protected footer: HTMLElement | null = null
+    protected header: HTMLElement | null = null
+    protected closeButton: HTMLElement | null = null
+    protected content: HTMLElement | null = null
 
     /* Objects for css classes & rendering function */
-    protected classes: LightboxClasses;
-    protected functions: LightboxFunctions;
+    protected classes: LightboxClasses
+    protected functions: LightboxFunctions
 
-    protected html: string = '';
+    protected html: string = ''
 
     /**
      * Set default css classes & rendering function
@@ -98,7 +98,7 @@ export class Lightbox {
             return;
         }
 
-        let closeBtn: HTMLElement | null = this.container.querySelector(Lightbox.getClassSelector(this.classes.closeButton));
+        const closeBtn: HTMLElement | null = this.container.querySelector(Lightbox.getClassSelector(this.classes.closeButton));
         if (closeBtn) {
             closeBtn.addEventListener('click', this.detach.bind(this));
         }
@@ -154,7 +154,7 @@ export class Lightbox {
             return;
         }
 
-        let innerTarget: HTMLElement | null = target.querySelector(Lightbox.getClassSelector(targetClassName));
+        const innerTarget: HTMLElement | null = target.querySelector(Lightbox.getClassSelector(targetClassName));
         if (innerTarget) {
             innerTarget.append(element);
         }
@@ -178,7 +178,7 @@ export class Lightbox {
             return;
         }
 
-        let innerTarget: HTMLElement | null = target.querySelector(Lightbox.getClassSelector(targetClassName));
+        const innerTarget: HTMLElement | null = target.querySelector(Lightbox.getClassSelector(targetClassName));
         if (innerTarget) {
             innerTarget.prepend(element);
         }
@@ -191,11 +191,11 @@ export class Lightbox {
      * @param data
      */
     protected static createElement(className: string, data: {[key: string]: string} = {}): HTMLElement {
-        let element: HTMLElement = elementFactory('div', {
+        const element: HTMLElement = elementFactory('div', {
             className: className
         });
 
-        for (let key in data) {
+        for (const key in data) {
             element.dataset[key] = data[key];
         }
 
@@ -206,12 +206,12 @@ export class Lightbox {
      * Static default function to create html div element with className and innerHTML
      */
     protected static createHtmlElement(html: string, className: string, data: {[key: string]: string} = {}): HTMLElement {
-        let element: HTMLElement = elementFactory('div', {
+        const element: HTMLElement = elementFactory('div', {
             className: className,
             innerHTML: html
         });
 
-        for (let key in data) {
+        for (const key in data) {
             element.dataset[key] = data[key];
         }
 
@@ -222,12 +222,12 @@ export class Lightbox {
      * Static default function to create html div element with className and innerHTML
      */
     protected static createImageElement(src: string, className: string, data: {[key: string]: string} = {}): HTMLElement {
-        let element: HTMLElement = elementFactory('img', {
+        const element: HTMLElement = elementFactory('img', {
             className: className,
             src: src
         });
 
-        for (let key in data) {
+        for (const key in data) {
             element.dataset[key] = data[key];
         }
 
@@ -260,7 +260,7 @@ export class Lightbox {
             return;
         }
 
-        let canvas: HTMLElement | null
+        const canvas: HTMLElement | null
             = this.container.querySelector(Lightbox.getClassSelector(this.classes.canvas));
 
         if (canvas && this.content) {
@@ -273,7 +273,7 @@ export class Lightbox {
      * If lightbox does not exist, attach lightbox to window
      */
     public attach(): void {
-        let html: HTMLElement | null = document.body.querySelector(Lightbox.getClassSelector(this.classes.lightbox));
+        const html: HTMLElement | null = document.body.querySelector(Lightbox.getClassSelector(this.classes.lightbox));
         if (!html) {
             this.create();
 
@@ -287,7 +287,7 @@ export class Lightbox {
      * If lightbox exist, detach lightbox from window
      */
     public detach(): void {
-        let html: HTMLElement | null = document.body.querySelector(Lightbox.getClassSelector(this.classes.lightbox));
+        const html: HTMLElement | null = document.body.querySelector(Lightbox.getClassSelector(this.classes.lightbox));
         if (html && this.container) {
             this.container.remove();
         }

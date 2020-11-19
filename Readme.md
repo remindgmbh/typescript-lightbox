@@ -1,32 +1,31 @@
 # REMIND - LIGHTBOX
 
-Diese Extension erweitert die rmnd_vehicles um LUEG-Spezifische Logiken.
-Typescript Modul für die Ausgabe von Lightboxen
+[travis-img]: https://img.shields.io/travis/remindgmbh/typescript-lightbox.svg?style=flat-square
+[codecov-img]: https://img.shields.io/codecov/c/github/remindgmbh/typescript-lightbox.svg?style=flat-square
+[github-issues-img]: https://img.shields.io/github/issues/remindgmbh/typescript-lightbox.svg?style=flat-square
+[contrib-welcome-img]: https://img.shields.io/badge/contributions-welcome-blue.svg?style=flat-square
+[license-img]: https://img.shields.io/github/license/remindgmbh/typescript-lightbox.svg?style=flat-square
 
-![remind-badge](https://img.shields.io/badge/author-REMIND-black.svg?style=flat-square)
-![typescript-badge](https://img.shields.io/badge/TypeScript-3.7.2-green.svg?style=flat-square)
-![license-badge](https://img.shields.io/badge/license-BSD--3--Clause-blue.svg?style=flat-square)
-![version-badge](https://img.shields.io/badge/version-2.1.0-lightgrey.svg?style=flat-square)
+[![travis-img]](https://travis-ci.com/github/remindgmbh/typescript-lightbox)
+[![codecov-img]](https://codecov.io/gh/remindgmbh/typescript-lightbox)
+[![github-issues-img]](https://github.com/remindgmbh/typescript-lightbox/issues)
+[![contrib-welcome-img]](https://github.com/remindgmbh/typescript-lightbox/blob/master/CONTRIBUTING.md)
+[![license-img]](https://github.com/remindgmbh/typescript-lightbox/blob/master/LICENSE)
+
+Does whatever a lightbox does.
 
 --------------------------------------------------------------------------------
 
 ## Table of contents
 
-- [Autoren](#autoren)
-- [Abhängigkeiten](#voraussetzungen)
-- [Installation](#installation)
-- [Benutzung](#benutzung)
+- [Authors](#Authors)
+- [Installation](#Installation)
+- [Usage](#Usage)
 
 --------------------------------------------------------------------------------
-## Autor
+## Authors
 - REMIND GmbH - <technik@remind.de>
 - Michael Didion - <m.didion@remind.de>
-
---------------------------------------------------------------------------------
-
-## Abhängigkeiten
-
-- [rmnd-util](https://bitbucket.org/remindgmbh/remind-util/)
 
 --------------------------------------------------------------------------------
 
@@ -35,14 +34,17 @@ Typescript Modul für die Ausgabe von Lightboxen
 Zum Einbinden des TypeScript Moduls muss folgende Abhängigkeit in den Dependencies
 einer package.json eingetragen werden.
 
-```"@remindgmbh/lightbox": "git+ssh://git@bitbucket.org:remindgmbh/remind-lightbox.git#1.1.0"```
+```npm i @remindgmbh/typescript-lightbox```
 
 --------------------------------------------------------------------------------
 
-## Benutzung 
+## Usage
+
 ### Lightbox
 
-```
+```typescript
+import { Lightbox } from '@remindgmbh/typescript-lightbox'
+
 let lightbox: Lightbox = new Lightbox('<div>Ein Html string</div>');
 // Attach html to dochument body
 lightbox.attach();
@@ -51,32 +53,34 @@ lightbox.setSource('<div>Ein anderer HTML string</div>');
 // Detach html from dochument body
 lightbox.detach();
 ```
-#### Ausgabe 
-```
+
+#### Output
+
+```html
 <div class="remind-lightbox">
 	<div class="remind-lightbox__header">
 		<div class="remind-lightbox__close-button"></div>
 	</div>
-	
+
 	<div class="remind-lightbox__canvas">
 		<div class="remind-lightbox__content">
 			<!--html string-->
 			<div>Ein anderer Html string</div>
 		</div>
 	</div>
-	
+
 	<div class="remind-lightbox__footer"></div>
 </div>
 
 ```
 
-#### Parameter
+#### Parameters
 | Parameter     | Type    | Default                           | Description                                                   |
 | ------------- | ------- | --------------------------------- | ------------------------------------------------------------- |
 | html        | string  | ```''```                          | Ein Html String der ausgeben wird                             |
 | options       | object  | {classes: {...}, functions: {...}}| Zum Überschreiben von CSS-Classes und Funktion für die Ausgabe|
 
-#### Funktionen 
+#### Functions
 | Parameter         | Type                                                   |
 | ------------      | ------------------------------------------------------ |
 | createCanvas      | (className: string) => HtmlElement                     |
@@ -85,7 +89,7 @@ lightbox.detach();
 | createCloseButton | (className: string) => HtmlElement                     |
 | createContent     | (htmlString: string, className: string) => HtmlElement |
 
-#### CSS Klassen 
+#### CSS Classes
 | Parameter|Default|
 | ----------- | ----------------------------- |
 | lightbox    | remind-lightbox               |
@@ -95,9 +99,11 @@ lightbox.detach();
 | content     | remind-lightbox__content      |
 | closeButton | remind-lightbox__close-button |
 
-#### Beispiel
+#### Example
 
-```
+```typescript
+import { Lightbox } from '@remindgmbh/typescript-lightbox'
+
 let lightbox: Lightbox = new Lightbox(
 	'<div>Ein Html string</div>',
 	{
@@ -111,7 +117,7 @@ let lightbox: Lightbox = new Lightbox(
 				html.innerHtml = htmlString;
 				return html;
 			}
-		} 
+		}
 	}
 );
 // Create html
@@ -121,39 +127,47 @@ lightbox.attach();
 // Detach html from dochument body
 lightbox.detach();
 ```
-#### Ausgabe 
-```
+
+#### Output
+
+```html
 <div class="remind-lightbox">
 	<div class="remind-lightbox__header">
 		<div class="remind-lightbox__close-button"></div>
 	</div>
-	
+
 	<div class="remind-lightbox__canvas">
 		<span class="custom-content-class">
 			<!--html string-->
 			<div>Ein Html string</div>
 		</div>
 	</div>
-	
+
 	<div class="remind-lightbox__footer"></div>
 </div>
 ```
+
+--------------------------------------------------------------------------------
+
 ### LightboxImage
-#### Parameter
+
+#### Parameters
 | Parameter     | Type    | Default                           | Description                                                   |
 | ------------- | ------- | --------------------------------- | ------------------------------------------------------------- |
 | item        | LightboxItem  | ```{image: '', headline: '', text: ''}``` | Pfad zur Bild Datei, Überschrift und Text zum Bild |
 | options       | object  | {classes: {...}, functions: {...}}| Zum Überschreiben von CSS-Classes und Funktion für die Ausgabe|
 
-#### Funktionen 
+#### Functions
 | Parameter        | Type                                                                                                                |
 | ------------     | ------------------------------------------------------------------------------------------------------------------- |
 | ...              | ...                                                                                                                 |
 | createImage    | createImage: (item: LightboxItem, classNameOuter: string, classNameImage: string, classNameHeadline: string, classNameText: string) => HTMLElement                                                       |
 
+--------------------------------------------------------------------------------
+
 ### LightboxGallery
 
-#### Zusätzliche öffentliche Methoden
+#### Additional Public Methods
 | Method                              | Description                                              |
 | ----------------------------------  | -------------------------------------------------------- |
 | next(): void                        | Setze das nächste Bild in den sources als aktives Bild   |
@@ -161,14 +175,14 @@ lightbox.detach();
 | setItems(items: LightboxItem[]): void | Setze neue Items                                       |
 | setItem(item: LightboxItem): void | Setze ausgwähltes Item                                     |
 
-#### Parameter
+#### Parameters
 | Parameter     | Type     | Default                           | Description                                                   |
 | ------------- | -------  | --------------------------------- | ------------------------------------------------------------- |
 | item        | LightboxItem   | ```{image: '', headline: '', text: ''}```                         | Pfad zur Bild Datei, Überschrift und Text zum Bild |
 | items       | LightboxItem[] | ```[]```                          |  |
 | options       | object   | {showThumbnails: false, showPagination: false, classes: {...}, functions: {...}}| Erweitert um die Optionen zur Anzeige der Thumbnails und der Pagination |
 
-#### Funktionen 
+#### Functions
 | Parameter        | Type                                                                                                                |
 | ------------     | ------------------------------------------------------------------------------------------------------------------- |
 | ...              | ...                                                                                                                 |
@@ -178,7 +192,7 @@ lightbox.detach();
 | createNext       | (className: string) => HtmlElement                                                                                  |
 | createPrev       | (className: string) => HtmlElement                                                                                  |
 
-#### CSS Klassen 
+#### CSS Classes
 | Parameter         | Default                       |
 | ----------------- | ----------------------------- |
 | thumbnails        | remind-lightbox__thumbnails   |
@@ -189,9 +203,9 @@ lightbox.detach();
 | next              | remind-lightbox__next         |
 | prev              | remind-lightbox__prev         |
 
-#### Beispiel
+#### Example
 
-```
+```html
 <div class="remind-lightbox">
 	<div class="remind-lightbox__header">
 		<div class="remind-lightbox__counter">

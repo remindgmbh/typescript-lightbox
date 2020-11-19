@@ -1,4 +1,4 @@
-import {elementFactory} from "@remindgmbh/util";
+import {elementFactory} from "@remindgmbh/typescript-utility-lib";
 import {Overrideables} from "./Lightbox";
 import {LightboxImage, LightboxImageFunctions, LightboxItem} from "./LightboxImage";
 
@@ -93,11 +93,11 @@ export class LightboxGallery extends LightboxImage {
             return;
         }
 
-        let thumbnails: NodeListOf<HTMLElement>
+        const thumbnails: NodeListOf<HTMLElement>
             = this.container.querySelectorAll(LightboxImage.getClassSelector(this.classes.thumbnail));
 
         for (let i: number = 0; i < thumbnails.length; i++) {
-            let thumbnail: HTMLElement = thumbnails.item(i);
+            const thumbnail: HTMLElement = thumbnails.item(i);
             let {image, headline, text} = thumbnail.dataset;
             headline = headline ? headline : '';
             text = text ? text : '';
@@ -111,12 +111,12 @@ export class LightboxGallery extends LightboxImage {
             }
         }
 
-        let next: HTMLElement | null = this.container.querySelector(LightboxImage.getClassSelector(this.classes.next));
+        const next: HTMLElement | null = this.container.querySelector(LightboxImage.getClassSelector(this.classes.next));
         if (next) {
             next.addEventListener('click', this.next.bind(this));
         }
 
-        let prev: HTMLElement | null = this.container.querySelector(LightboxImage.getClassSelector(this.classes.prev));
+        const prev: HTMLElement | null = this.container.querySelector(LightboxImage.getClassSelector(this.classes.prev));
         if (prev) {
             prev.addEventListener('click', this.prev.bind(this));
         }
@@ -149,13 +149,13 @@ export class LightboxGallery extends LightboxImage {
         super.buildCanvas();
 
         if (this.content) {
-            let next: HTMLElement = this.functionsGalleryExtended.createNext(this.classes.next);
+            const next: HTMLElement = this.functionsGalleryExtended.createNext(this.classes.next);
             if ((this.index + 1) === this.items.length) {
                 next.classList.add(this.CLASS_STATUS_DISABLED);
             }
             this.content.after(next);
 
-            let prev: HTMLElement = this.functionsGalleryExtended.createNext(this.classes.prev);
+            const prev: HTMLElement = this.functionsGalleryExtended.createNext(this.classes.prev);
             if (this.index === 0) {
                 prev.classList.add(this.CLASS_STATUS_DISABLED);
             }
@@ -178,7 +178,7 @@ export class LightboxGallery extends LightboxImage {
                     return;
                 }
 
-                let thumbnail: HTMLElement = this.functionsGalleryExtended.createThumbnail(
+                const thumbnail: HTMLElement = this.functionsGalleryExtended.createThumbnail(
                     this.items[index].image,
                     this.classes.thumbnail,
                     {
@@ -204,17 +204,17 @@ export class LightboxGallery extends LightboxImage {
      * @param classNameMax
      */
     protected static createPagination(index: number, maxIndex: number, className: string, classNameCurrent: string, classNameMax: string): HTMLElement {
-        let pagination: HTMLElement = elementFactory('div', {
+        const pagination: HTMLElement = elementFactory('div', {
             className: className
         });
 
-        let current: HTMLElement = elementFactory('span', {
+        const current: HTMLElement = elementFactory('span', {
             className: classNameCurrent,
             innerText: String(index)
         });
         pagination.append(current);
 
-        let max: HTMLElement = elementFactory('span', {
+        const max: HTMLElement = elementFactory('span', {
             className: classNameMax,
             innerText: String(maxIndex)
         });
@@ -253,17 +253,17 @@ export class LightboxGallery extends LightboxImage {
             return;
         }
 
-        let activeThumbnail: HTMLElement | null
+        const activeThumbnail: HTMLElement | null
             = this.container.querySelector(LightboxImage.getClassSelector(this.classes.thumbnail) + '.' + this.classes.thumbnailActive);
         if (activeThumbnail) {
             activeThumbnail.classList.remove(this.classes.thumbnailActive);
         }
 
-        let thumbnails: NodeListOf<HTMLElement>
+        const thumbnails: NodeListOf<HTMLElement>
             = this.container.querySelectorAll(LightboxImage.getClassSelector(this.classes.thumbnail));
 
         for (let i: number = 0; i < thumbnails.length; i++) {
-            let thumbnail: HTMLElement = thumbnails.item(i);
+            const thumbnail: HTMLElement = thumbnails.item(i);
 
             if (thumbnail.dataset['image'] && thumbnail.dataset['image'] == this.item.image) {
                 thumbnail.classList.add(this.classes.thumbnailActive);
@@ -277,12 +277,12 @@ export class LightboxGallery extends LightboxImage {
      * Set source and index
      */
     public next(): void {
-        let index = this.index + 1;
+        const index = this.index + 1;
         if (index >= this.items.length) {
             return;
         }
 
-        let item: LightboxItem = this.getItemByIndex(index);
+        const item: LightboxItem = this.getItemByIndex(index);
         this.setItem(item);
     }
 
@@ -291,12 +291,12 @@ export class LightboxGallery extends LightboxImage {
      * Set source and index
      */
     public prev(): void {
-        let index = this.index - 1;
+        const index = this.index - 1;
         if (index < 0) {
             return;
         }
 
-        let item: LightboxItem = this.getItemByIndex(index);
+        const item: LightboxItem = this.getItemByIndex(index);
         this.setItem(item);
     }
 
@@ -315,7 +315,7 @@ export class LightboxGallery extends LightboxImage {
 
         this.setActiveThumbnail();
 
-        let prev: HTMLElement | null
+        const prev: HTMLElement | null
             = this.container.querySelector(LightboxImage.getClassSelector(this.classes.prev));
         if (prev) {
             if (this.index === 0) {
@@ -325,7 +325,7 @@ export class LightboxGallery extends LightboxImage {
             }
         }
 
-        let next: HTMLElement | null
+        const next: HTMLElement | null
             = this.container.querySelector(LightboxImage.getClassSelector(this.classes.next));
         if (next) {
             if ((this.index + 1) === this.items.length) {
@@ -335,20 +335,20 @@ export class LightboxGallery extends LightboxImage {
             }
         }
 
-        let counter: HTMLElement | null
+        const counter: HTMLElement | null
             = this.container.querySelector(LightboxImage.getClassSelector(this.classes.paginationCurrent));
         if (counter) {
             counter.innerText = String(this.index + 1);
         }
 
-        let image: HTMLImageElement | null
+        const image: HTMLImageElement | null
             = this.container.querySelector(LightboxImage.getClassSelector(this.classes.image));
         if (!(image instanceof HTMLImageElement)) {
             return;
         }
         image.src = this.item.image;
 
-        let headline: HTMLElement | null
+        const headline: HTMLElement | null
             = this.container.querySelector(LightboxImage.getClassSelector(this.classes.headline));
         if (!headline) {
             return;
@@ -356,7 +356,7 @@ export class LightboxGallery extends LightboxImage {
 
         headline.innerText = this.item.headline;
 
-        let text: HTMLElement | null
+        const text: HTMLElement | null
             = this.container.querySelector(LightboxImage.getClassSelector(this.classes.text));
         if (!text) {
             return;
@@ -375,7 +375,7 @@ export class LightboxGallery extends LightboxImage {
         this.items = Array.from(new Set(items.map(item => JSON.stringify(item)))).map(item => JSON.parse(item));
         this.setItem(items[0]);
 
-        let html: HTMLElement | null = document.body.querySelector(LightboxImage.getClassSelector(this.classes.lightbox));
+        const html: HTMLElement | null = document.body.querySelector(LightboxImage.getClassSelector(this.classes.lightbox));
         if (html) {
             this.detach();
             this.attach();
